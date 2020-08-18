@@ -1,68 +1,60 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Skand
 
-## Available Scripts
+To the developer who received this take home challenge. Congratulations on reaching this stage of Skand's frontend developer recruitment process. In this stage, you will receive a series of tasks. The purpose and goals of this process is for you to:
 
-In the project directory, you can run:
+1. Get you familiar with the basic tools Skand's dev team are using
+2. Assert your skill in implementing the functionalities required by the team / clients
+3. Assert your ability to learn new technologies as some of the tools required for this challenge may be new to you
 
-### `yarn start`
+## Before starting the app
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. `$ yarn install` to install the `node_modules`
+2. `$ yarn start` to execute the project and run on http://localhost:3000 by default
+3. `$ yarn build` to build the static version application, which stores in `./build/` directory
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### To fetch data from the mock server
 
-### `yarn test`
+- Example call to the mock server `fetch('/api/v2/users')` to GET all users
+- You will need to login first with the `POST /users/tokens` route. In `response.headers.map.authorization`, you can find the token required to call all other routes
+- Store the token in either the Cookies or LocalStorage and put the token in the headers when you are calling other routes. For instance:
+  ```
+  const token = TOKEN_STORED_IN_THE_COOKIES;
+  fetch('/api/v2/users', {
+    headers: {
+      Authorization: token,
+    }
+  })
+  ```
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Available mock server routes
 
-### `yarn build`
+- `POST /users/tokens` to login and get the token used to fetch other routes. If the token is not provided in the headers, the request will fail with `401 Unauthorized`
+  - The request body of the login route should be:
+    ```
+    {
+      email: 'test@skand.io',
+      password: 'password'
+    }
+    ```
+- `DELETE /users/tokens` to logout
+- `GET /users` to fetch all users
+- `GET /users/:id` to fetch the single user with the specified id
+- `POST /users` to create a new user
+  - The request body of the new user creation route looks like this:
+    ```
+    {
+      "email": "test1@skand.io",
+      "first_name": "Test",
+      "last_name": "User 1",
+      "jobs_count": 1,
+      "active": true,
+      "slack_username": "U57V3NH8W"
+    }
+    ```
+- `PATCH /users/:id` to update the user with the specified id
+- `DELETE /users/:id` to delete the user with the specified id
+- If any part of this short documentation appears to be unclear, take a look at the files under `/src/mockServer/`
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Any questions?
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Don't hesitate to ask! We're happy to guide you to succeed on this stage and soon become our potential team / family member.
