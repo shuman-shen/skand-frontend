@@ -1,6 +1,6 @@
 # Tasks List
 
-### Basic
+### Frontend basics
 
 1. Implement a Login page that uses `Formik` to implement the forms and `Yup` to do basic form validation
 2. Implement a Users Index page by fetching data from `GET /api/v2/users`
@@ -23,7 +23,7 @@
 - Feel free to use any CSS frameworks (Bootstrap / Reactstrap / CoreUI / MateiralizeCSS)
 - Use CSS-in-JS libraries (`styled-components` / `emotion` e.t.c.)
 
-### Advanced (Try your best to finish all the basic tasks first)
+### Devops/Cloud Infra
 
 1. Research about `AWS S3 Static Hosting` and the way to deploy your ReactJS application on S3.
 2. Set up the cloud infrastructure on AWS S3 to host the static built React app on it.
