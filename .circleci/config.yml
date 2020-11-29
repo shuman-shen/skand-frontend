@@ -1,26 +1,29 @@
 version: 2.1
+
 jobs:
   build:
     docker:
-      - image: circleci/node:12.18.2-node-browsers
-      
-steps:
-  - checkout
+      - image: cimg/node:12.18.2
 
-  - restore_cache:
-    keys:
-      - v1-dependencies-{{ checksum "package.json" }}
-      - v1-dependencies-
+    steps:
+      - checkout
 
-  - run: yarn install
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run: yarn install
 
-  - save_cache:
-    paths:
-      - node_modules
-      - ~/.npm
-      - ~/.cache
-    key: v1-dependencies-{{ checksum "package.json" }}
+      - save_cache:
+          paths:
+            - node_modules
+            - ~/.npm
+            - ~/.cache
+          key: v1-dependencies-{{ checksum "package.json" }}
 
-  - run: yarn lint
+      - run: yarn lint
 
-  - run: yarn test
+      - run: yarn test
+
+      - run: yarn build
