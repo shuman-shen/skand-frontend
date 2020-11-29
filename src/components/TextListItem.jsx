@@ -26,13 +26,13 @@ const useStyles = makeStyles({
 const TextListItem = ({ title, content, Icon }) => {
   const classes = useStyles();
   return (
-    <Box className={classes.root}>
-      {Icon ? <Icon className={classes.icon} /> : null}
-      <Box className={classes.textContainer}>
-        <Typography className={classes.title}>{title}</Typography>
-        <Typography>{content}</Typography>
+    <Box data-testid='textListItem' className={classes.root}>
+      {Icon ? <Icon data-testid='textListItem-icon' className={classes.icon} /> : null}
+      <Box data-testid='textListItem-content' className={classes.textContainer}>
+        <Typography data-testid='textListItem-text' className={classes.title}>{title}</Typography>
+        <Typography data-testid='textListItem-text'>{content}</Typography>
       </Box>
-      <Divider />
+      <Divider data-testid='textListItem-divider'/>
     </Box>
   );
 };
