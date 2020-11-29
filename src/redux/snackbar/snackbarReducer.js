@@ -1,19 +1,21 @@
+import { snackbarActionTypes } from './snackbarTypes';
+
 const INITIAL_STATE = {
-  open: true,
+  open: false,
   severity: 'info',
   message: 'Welcome.',
 };
 
 const snackbarReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case 'OPEN_SNACKBAR':
+    case snackbarActionTypes.OPEN_SNACKBAR:
       return {
         ...state,
-        severity: action.payload.type,
+        severity: action.payload.severity,
         message: action.payload.message,
         open: true,
       };
-    case 'CLOSE_SNACKBAR':
+    case snackbarActionTypes.CLOSE_SNACKBAR:
       return {
         ...state,
         open: false,

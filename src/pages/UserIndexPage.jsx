@@ -1,51 +1,31 @@
 import React, { useEffect } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import MaterialTable from 'material-table';
-import { Button, Container } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 import tableIcons from '../utilities/tableIcons';
 import Details from '@material-ui/icons/Details';
 import Edit from '@material-ui/icons/Edit';
 import Delete from '@material-ui/icons/DeleteOutline';
+import AddBox from '@material-ui/icons/AddBox';
 import { connect } from 'react-redux';
-import { deleteUser, setIndexList } from '../redux/index/indexActions';
+import { deleteUserStart } from '../redux/index/indexActions';
 import { selectIndexList } from '../redux/index/indexSelectors';
+import { fetchIndexStart } from '../redux/index/indexActions';
 
-const UserIndexPage = ({ indexList, deleteUser, history, match, setIndexList }) => {
+const UserIndexPage = ({ indexList, deleteUserStart, history, match, fetchIndexStart }) => {
   useEffect(() => {
-    fetch('/api/v2/users', {
-      method: 'get',
-      headers: {
-        authorization: localStorage.getItem('skandToken'),
-      },
-    }).then((res) => {
-      if (res.ok) {
-        const result = JSON.parse(res._bodyText);
-        console.log(result);
-        console.log(result.users);
-        setIndexList(result.users);
-      } else if (res.status === 401) {
-        console.log(res);
-      } else {
-      }
-    });
+    fetchIndexStart();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (!localStorage.getItem('skandToken')) return <Redirect to="/signin" />;
+
   return (
     <Container maxWidth="md">
       <MaterialTable
-        components={{
-          Toolbar: (props) => (
-            <Button
-              color="primary"
-              variant="contained"
-              component={Link}
-              to={`${match.path}/edit/new`}
-            >
-              Add New
-            </Button>
-          ),
-        }}
+        title="User Index"
         columns={[
-          { title: 'ID', field: 'id', filtering: false },
+          { title: 'ID', field: 'id', filtering: false, sorting: true, defaultSort: 'asc' },
           { title: 'Email', field: 'email' },
           { title: 'Jobs Count', field: 'jobs_count', type: 'numeric', filtering: false },
           {
@@ -59,10 +39,19 @@ const UserIndexPage = ({ indexList, deleteUser, history, match, setIndexList }) 
           filtering: true,
           search: false,
           actionsColumnIndex: -1,
-          showTitle: false,
         }}
         icons={tableIcons}
         actions={[
+          {
+            icon: () => <AddBox fontSize="large" />,
+            tooltip: 'Add New User',
+            // This makes add button to appear in table toolbar instead for each row
+            isFreeAction: true,
+            onClick: (event, rowData) => {
+              history.push(`${match.path}/edit/new`);
+            },
+          },
+
           {
             icon: () => <Details />,
             tooltip: 'View Details',
@@ -81,7 +70,7 @@ const UserIndexPage = ({ indexList, deleteUser, history, match, setIndexList }) 
             icon: () => <Delete />,
             tooltip: 'Delete',
             onClick: (event, rowData) => {
-              deleteUser(rowData);
+              deleteUserStart(rowData);
             },
           },
         ]}
@@ -95,8 +84,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setIndexList: (list) => dispatch(setIndexList(list)),
-  deleteUser: (user) => dispatch(deleteUser(user)),
+  fetchIndexStart: () => dispatch(fetchIndexStart()),
+  deleteUserStart: (user) => dispatch(deleteUserStart(user)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(UserIndexPage));

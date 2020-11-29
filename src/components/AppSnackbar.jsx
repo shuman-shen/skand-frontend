@@ -1,5 +1,5 @@
 import React from 'react';
-import Snackbar from '@material-ui/core/Snackbar';
+import { Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import {
   selectSnackbarMessage,
@@ -11,11 +11,18 @@ import { connect } from 'react-redux';
 
 const AppSnackbar = ({ open, severity, message, closeSnackbar }) => {
   return (
-    <Snackbar open={open} autoHideDuration={6000} onClose={closeSnackbar}>
-      <MuiAlert onClose={closeSnackbar} severity={severity}>
-        {message}
-      </MuiAlert>
-    </Snackbar>
+    <div>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={open}
+        autoHideDuration={6000}
+        onClose={closeSnackbar}
+      >
+        <MuiAlert onClose={closeSnackbar} severity={severity}>
+          {message}
+        </MuiAlert>
+      </Snackbar>
+    </div>
   );
 };
 

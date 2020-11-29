@@ -1,8 +1,10 @@
+import { snackbarActionTypes } from './snackbarTypes';
+
 export const closeSnackbar = () => ({
-  type: 'CLOSE_SNACKBAR',
+  type: snackbarActionTypes.CLOSE_SNACKBAR,
 });
 
 export const openSnackbar = (info) => ({
-  type: 'OPEN_SNACKBAR',
+  type: snackbarActionTypes.OPEN_SNACKBAR,
   payload: info,
 });

@@ -1,33 +1,39 @@
 import React from 'react';
-import { Typography } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 import { Redirect, withRouter } from 'react-router-dom';
 import UserEditForm from '../components/UserEditForm';
-import { selectIndexItem } from '../redux/index/indexSelectors';
+import { selectIndexItem, selectIndexList } from '../redux/index/indexSelectors';
+import { fetchIndexStart } from '../redux/index/indexActions';
 import { connect } from 'react-redux';
+import { FormHeading } from '../styles/formStyles';
 
-const UserEditPage = ({ match, userDetails }) => {
+const UserEditPage = ({ match, userDetails, fetchIndexStart, history }) => {
   const { id } = match.params;
 
   if (id === 'new') {
     return (
-      <div>
-        <Typography>Add New User</Typography>
+      <Container maxWidth="sm">
+        <FormHeading variant="h5">Add New User</FormHeading>
         <UserEditForm />
-      </div>
+      </Container>
     );
   }
-  if (!userDetails) return <Redirect to="/404" />;
+  if (!userDetails) return <Redirect to="/userIndex" />;
 
   return (
-    <div>
-      <Typography>{`User ID: ${id}`}</Typography>
+    <Container maxWidth="sm">
+      <FormHeading variant="h5">{`User ID: ${id}`}</FormHeading>
       <UserEditForm initialEntry={userDetails} isNew={false} />
-    </div>
+    </Container>
   );
 };
 
 const mapStateToProps = (state, ownProps) => ({
   userDetails: selectIndexItem(ownProps.match.params.id)(state),
+  indexList: selectIndexList(state),
+});
+const mapDispatchToProps = (dispatch) => ({
+  fetchIndexStart: () => dispatch(fetchIndexStart()),
 });
 
-export default connect(mapStateToProps)(withRouter(UserEditPage));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(UserEditPage));
