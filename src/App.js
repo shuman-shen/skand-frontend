@@ -8,16 +8,18 @@ import UserEditPage from './pages/UserEditPage';
 import UserDetailsPage from './pages/UserDetailsPage';
 import NotFound from './pages/NotFound';
 import AppSnackbar from './components/AppSnackbar';
+import ProtectedRoute from './components/ProtectedRoute';
+import UnprotectedRoute from './components/UnprotectedRoute';
 
 function App() {
   return (
     <div>
       <NavBar />
       <Switch>
-        <Route path="/signin" component={SignInPage} />
-        <Route path="/userIndex/edit/:id" component={UserEditPage} />
-        <Route path="/userIndex/view/:id" component={UserDetailsPage} />
-        <Route path="/userIndex" component={UserIndexPage} />
+        <UnprotectedRoute path="/signin" component={SignInPage} />
+        <ProtectedRoute path="/userIndex/edit/:id" component={UserEditPage} />
+        <ProtectedRoute path="/userIndex/view/:id" component={UserDetailsPage} />
+        <ProtectedRoute path="/userIndex" component={UserIndexPage} />
         <Route path="/404" component={NotFound} />
         <Redirect exact from="/" to="/userIndex" />
         <Redirect to="404" />

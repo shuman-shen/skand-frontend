@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Redirect, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import MaterialTable from 'material-table';
 import { Container } from '@material-ui/core';
 import tableIcons from '../utilities/tableIcons';
@@ -18,7 +18,7 @@ const UserIndexPage = ({ indexList, deleteUserStart, history, match, fetchIndexS
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!localStorage.getItem('skandToken')) return <Redirect to="/signin" />;
+  //if (!localStorage.getItem('skandToken')) return <Redirect to="/signin" />;
 
   return (
     <Container maxWidth="md">

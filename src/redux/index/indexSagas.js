@@ -1,25 +1,13 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
 import { snackbarActionTypes } from '../snackbar/snackbarTypes';
 import { indexActionTypes } from './indexTypes';
-
-const getUserIndexRequest = () => {
-  const result = fetch('/api/v2/users', {
-    method: 'get',
-    headers: {
-      authorization: localStorage.getItem('skandToken'),
-    },
-  })
-    .then((res) => res.json())
-    .then((json) => {
-      if (json.message) {
-        throw Error(json.message);
-      } else {
-        return json.users;
-      }
-    });
-
-  return result;
-};
+import {
+  deleteUserRequest,
+  getUserByIdRequest,
+  getUserIndexRequest,
+  postNewUserRequest,
+  patchUserRequest,
+} from '../../services/indexFetch';
 
 export function* setIndexListAsync() {
   try {
@@ -43,25 +31,6 @@ export function* setIndexListAsync() {
 export function* fetchIndexStart() {
   yield takeLatest(indexActionTypes.FETCH_INDEX_START, setIndexListAsync);
 }
-
-const postNewUserRequest = (user) => {
-  const result = fetch('/api/v2/users', {
-    method: 'post',
-    body: JSON.stringify(user),
-    headers: {
-      authorization: localStorage.getItem('skandToken'),
-    },
-  })
-    .then((res) => res.json())
-    .then((json) => {
-      if (json.message) {
-        throw Error(json.message);
-      } else {
-        return json.users;
-      }
-    });
-  return result;
-};
 
 export function* addNewUserAsync({ payload }) {
   try {
@@ -98,25 +67,6 @@ export function* addNewUserAsync({ payload }) {
 export function* addNewUserStart() {
   yield takeLatest(indexActionTypes.ADD_USER_START, addNewUserAsync);
 }
-
-const patchUserRequest = (user) => {
-  const result = fetch(`/api/v2/users/${user.id}`, {
-    method: 'patch',
-    body: JSON.stringify(user),
-    headers: {
-      authorization: localStorage.getItem('skandToken'),
-    },
-  })
-    .then((res) => res.json())
-    .then((json) => {
-      if (json.message) {
-        throw Error(json.message);
-      } else {
-        return json.users;
-      }
-    });
-  return result;
-};
 
 export function* editUserAsync({ payload }) {
   try {
@@ -155,21 +105,6 @@ export function* editUserStart() {
   yield takeLatest(indexActionTypes.EDIT_USER_START, editUserAsync);
 }
 
-const deleteUserRequest = (user) => {
-  const result = fetch(`/api/v2/users/${user.id}`, {
-    method: 'delete',
-    headers: {
-      authorization: localStorage.getItem('skandToken'),
-    },
-  })
-    .then((res) => res.json())
-    .then((json) => {
-      if (json.message) throw Error(json.message);
-      return json;
-    });
-  return result;
-};
-
 export function* deleteUserAsync({ payload }) {
   try {
     yield call(deleteUserRequest, payload);
@@ -207,25 +142,6 @@ export function* deleteUserAsync({ payload }) {
 export function* deleteUserStart() {
   yield takeLatest(indexActionTypes.DELETE_USER_START, deleteUserAsync);
 }
-
-const getUserByIdRequest = (id) => {
-  const result = fetch(`api/v2/users/${id}`, {
-    method: 'get',
-    headers: {
-      authorization: localStorage.getItem('skandToken'),
-    },
-  })
-    .then((res) => res.json())
-    .then((json) => {
-      if (json.message) {
-        throw Error(json.message);
-      } else {
-        return json;
-      }
-    });
-
-  return result;
-};
 
 export function* getUserByIdAsync() {
   try {

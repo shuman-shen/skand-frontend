@@ -1,25 +1,7 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
 import { snackbarActionTypes } from '../snackbar/snackbarTypes';
 import { userActionTypes } from './userTypes';
-
-const postSignInRequest = (user) => {
-  const result = fetch('/api/v2/users/tokens', {
-    method: 'post',
-    body: JSON.stringify(user),
-  })
-    .then((res) => {
-      if (res.ok) {
-        localStorage.setItem('skandToken', res.headers.map.authorization);
-
-        return res;
-      }
-      return res.json();
-    })
-    .then((json) => {
-      if (json.message) throw Error(json.message);
-    });
-  return result;
-};
+import { postSignInRequest, signOutRequest } from '../../services/userFetch';
 
 export function* signInAsync({ payload }) {
   try {
@@ -47,20 +29,6 @@ export function* signInAsync({ payload }) {
 export function* signInStart() {
   yield takeLatest(userActionTypes.SIGN_IN_START, signInAsync);
 }
-
-const signOutRequest = () => {
-  const result = fetch(`/api/v2/users/tokens`, {
-    method: 'delete',
-  })
-    .then((res) => res.json())
-    .then((json) => {
-      if (json.message) throw Error(json.message);
-      localStorage.removeItem('skandToken');
-      localStorage.removeItem('persist:skandUser');
-      return json;
-    });
-  return result;
-};
 
 export function* signOutAsync() {
   try {
